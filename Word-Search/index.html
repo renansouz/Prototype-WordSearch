@@ -22,8 +22,8 @@
                     </ul>
                 </div>
             </div>
-        
-        
+
+
             <span class="form-titulo">Caça-Palavras</span>
             <div class="form-group">
                 <div class="row row-space-evenly">
@@ -391,10 +391,10 @@
                     ulListaPalavras.appendChild(liPalavra);
                 });
 
-                ulListaPalavras.addEventListener("click", function(event) {
-                  if (event.target && event.target.matches("li.item-palavra")) {
-                      console.log(event.target.innerText)
-                      circularPalavra(event.target.innerText)
+                ulListaPalavras.addEventListener("click", function (event) {
+                    if (event.target && event.target.matches("li.item-palavra")) {
+                        console.log(event.target.innerText)
+                        circularPalavra(event.target.innerText)
                     }
                 });
             };
@@ -577,18 +577,6 @@
         const loopInterval = setInterval(() => {
             loop();
         }, 50);
-
-
-
-        
-
-          
-
-
-
-          
     </script>
-
 </body>
-
 </html>
