@@ -23,9 +23,7 @@
                 </div>
             </div>
 
-        </div>
-
-        <div class="box box-6">
+        
             <span class="form-titulo">Caça-Palavras</span>
             <div class="form-group">
                 <div class="row row-space-evenly">
@@ -34,6 +32,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
 
@@ -63,12 +62,13 @@
             // Inicializa arrays para armazenar informações da grade de letras
             let listaPalavras = []; // Armazena as palavras a serem inseridas na grade
             let gridLetras = []; // Armazena a configuração da grade com letras
+             let colorWordBg = "rgba(256, 20, 20, 0.3)"
             let selecaoAtual = {
                 indiceInicialX: undefined,
                 indiceInicialY: undefined,
                 posicaoInicialX: undefined,
                 posicaoInicialY: undefined,
-                cor: retornarCorAleatoria(), // Atribui uma cor aleatória à seleção atual
+               cor: colorWordBg // Atribui uma cor aleatória à seleção atual
             };
         }
     

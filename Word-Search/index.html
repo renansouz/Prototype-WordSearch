@@ -36,41 +36,44 @@
     </div>
 
     <script>
+         // Função que mapeia um valor de entrada para um novo intervalo
         function map(valueIn, minIn, maxIn, minOut, maxOut) {
             return ((valueIn - minIn) / (maxIn - minIn)) * (maxOut - minOut) + minOut;
         }
-
+         // Função que cria uma grade de letras em um elemento HTML
         function createGrid(divGrid, qtdeLinhas, qtdeColunas, paramOpcoes) {
+            // Define opções padrão e sobrescreve com as opções fornecidas, se houver
             const opcoes = {
                 habilitarDiagonais: false,
                 habilitarPalavrasInvertidas: false,
                 habilitarPalavrasInvertidasEmDiagonais: false,
                 ...paramOpcoes,
             };
+             // Inicializa arrays para armazenar informações da grade de letras
+            let listaPalavras = [];// Armazena as palavras a serem inseridas na grade
 
-            let listaPalavras = [];
+            let gridLetras = [];  // Armazena a configuração da grade com letras
 
-            let gridLetras = [];
-
-            let colorWordBg = "rgba(256, 20, 20, 0.3)"
+            let colorWordBg = "rgba(256, 20, 20, 0.3)" // Atribui uma cor 
 
             let selecaoAtual = {
                 indiceInicialX: undefined,
                 indiceInicialY: undefined,
                 posicaoInicialX: undefined,
                 posicaoInicialY: undefined,
-                cor: colorWordBg
+                cor: colorWordBg // Atribui uma cor 
             };
-
+             // Função que gera uma letra aleatória 
             const gerarLetraAleatoria = () => {
                 const indiceLetra = Math.floor(Math.random() * 26);
                 return String.fromCharCode(65 + indiceLetra);
             };
-
+             // Função que inicializa a grade de letras com letras aleatórias
             const inicializar = () => {
                 for (let linha = 0; linha < qtdeLinhas; linha++) {
                     gridLetras[linha] = [];
                     for (let coluna = 0; coluna < qtdeColunas; coluna++) {
+                        // Cria um objeto para cada célula da grade com letra aleatória e estado "não fixo"
                         gridLetras[linha][coluna] = {
                             letra: gerarLetraAleatoria(),
                             ehFixa: false,
@@ -78,8 +81,9 @@
                     }
                 }
             };
-
+              // Função que verifica se a orientação é válida de acordo com as opções
             const verificarOrientacaoValida = (orientacao) => {
+                 // Verifica as restrições de orientação baseadas nas opções fornecidas
                 if (!opcoes.habilitarDiagonais && [1, 3, 5, 7].includes(orientacao)) {
                     return false;
                 }
@@ -98,18 +102,19 @@
 
                 return true;
             };
-
+            // Função que verifica se uma posição (coordenadas) está dentro dos limites da grade
             const verificarSeCabeNoGrid = ({ xFinal, yFinal }) => {
                 return (
                     xFinal >= 0 && xFinal < qtdeColunas && yFinal >= 0 && yFinal < qtdeLinhas
                 );
             };
 
+              // Função que verifica se uma célula específica está disponível (não fixa ou contém a letra da palavra)
             const verificarSeCelulaEstaDisponivel = (iColuna, iLinha, letraPalavra) => {
                 const celula = gridLetras[iLinha][iColuna];
                 return !celula.ehFixa || celula.letra === letraPalavra;
             };
-
+                        // Função que verifica se todas as células necessárias para uma palavra estão disponíveis
             const verificarSeCelulasEstaoDisponiveis = (posicao) => {
                 const { palavra, xInicial, yInicial, xFinal, yFinal } = posicao;
                 let flagCelulasDisponiveis = true;
@@ -124,6 +129,7 @@
                 return flagCelulasDisponiveis;
             };
 
+            // Função que calcula a coordenada x final com base na orientação e largura da palavra
             const retornarXFinal = (xInicial, larguraPalavra, orientacao) => {
                 switch (orientacao) {
                     case 0: // Direção (relógio): 12h00
@@ -142,6 +148,7 @@
                 }
             };
 
+             // Função que calcula a coordenada y final com base na orientação e largura da palavra
             const retornarYFinal = (yInicial, larguraPalavra, orientacao) => {
                 switch (orientacao) {
                     case 2: // Direção (relógio): 03h00
@@ -159,14 +166,15 @@
                         return yInicial + larguraPalavra - 1;
                 }
             };
-
+                // Função que gera uma lista de posições possíveis para uma palavra na grade
             const listarPosicoesPossiveis = (palavra) => {
                 let listaPosicoes = [];
-
+                  // Loop através de todas as orientações possíveis
                 for (let orientacao = 0; orientacao < 8; orientacao++) {
                     if (verificarOrientacaoValida(orientacao)) {
                         for (let xInicial = 0; xInicial < qtdeColunas; xInicial++) {
                             for (let yInicial = 0; yInicial < qtdeLinhas; yInicial++) {
+                             // Calcula as coordenadas x e y finais com base na orientação
                                 const posicao = {
                                     palavra,
                                     xInicial,
@@ -176,7 +184,7 @@
                                     palavraEstaCirculada: false,
                                     cor: colorWordBg
                                 };
-
+                               // Verifica se a posição se encaixa no grid e se as células estão disponíveis
                                 if (
                                     verificarSeCabeNoGrid(posicao) &&
                                     verificarSeCelulasEstaoDisponiveis(posicao)
@@ -190,22 +198,25 @@
 
                 return listaPosicoes;
             };
-
+            // Função que adiciona uma palavra na posição especificada
             const adicionarPalavraNaPosicao = (posicao) => {
                 const { palavra, xInicial, yInicial, xFinal, yFinal } = posicao;
                 for (let indice = 0; indice < palavra.length; indice++) {
                     const xAtual = map(indice, 0, palavra.length - 1, xInicial, xFinal);
                     const yAtual = map(indice, 0, palavra.length - 1, yInicial, yFinal);
+                       // Define as células da grade como fixas e preenche com as letras da palavra
                     gridLetras[yAtual][xAtual] = {
                         letra: palavra[indice],
                         ehFixa: true,
                     };
                 }
+                   // Adiciona a posição à lista de palavras
                 listaPalavras.push(posicao);
             };
 
+            // Função que adiciona uma palavra ao caça-palavras
             const adicionarPalavra = (palavra) => {
-                if (!palavra) {
+                if (!palavra) { //nao usado. 
                     return `Informe uma palavra válida.`;
                 }
                 if (listaPalavras.find(obj => obj.palavra === palavra.toUpperCase())) {
@@ -213,29 +224,32 @@
                 }
                 if (palavra.length > Math.max(qtdeLinhas, qtdeColunas)) {
                     return `A palavra '${palavra}' não cabe no caça-palavras.`;
-                }
+                } 
+                 // Lista todas as posições possíveis para a palavra
                 const listaPosicoes = listarPosicoesPossiveis(palavra.toUpperCase());
                 if (listaPosicoes.length === 0) {
                     return (
                         `Não foi encontrada nenhuma posição disponível para a palavra '${palavra}' no caça-palavras.`
                     );
                 }
+                  // Escolhe aleatoriamente uma posição da lista e adiciona a palavra lá
                 const indiceRandom = Math.floor(Math.random() * listaPosicoes.length);
                 adicionarPalavraNaPosicao(listaPosicoes[indiceRandom]);
             };
 
+              // Função que circula ou desmarca uma palavra no caça-palavras
             const circularPalavra = (palavra) => {
-                if (!palavra) {
+                if (!palavra) { //nao usado. 
                     throw new Error(`Informe uma palavra válida.`);
                 }
                 let objPalavra = listaPalavras.find(
                     (p) => p.palavra === palavra.toUpperCase()
                 );
-                if (!objPalavra) {
+                if (!objPalavra) { //nao usado.
                     throw new Error(
                         `A palavra '${palavra}' não foi encontrada no caça-palavras.`
                     );
-                }
+                } // Alterna o status de circulação da palavra e redefine sua cor
                 if (objPalavra.palavraEstaCirculada) {
                     objPalavra.palavraEstaCirculada = false;
                 }
@@ -245,7 +259,9 @@
                 }
             };
 
+             // Função que retorna a orientação baseada nas coordenadas x e y das posições inicial e final
             const retornarOrientacao = ({ xInicial, yInicial, xFinal, yFinal }) => {
+                  // Verifica as diferentes combinações de coordenadas para determinar a orientação
                 if (xFinal === xInicial && yFinal < yInicial) return 0;
                 if (xFinal > xInicial && yFinal < yInicial) return 1;
                 if (xFinal > xInicial && yFinal === yInicial) return 2;
@@ -256,6 +272,7 @@
                 if (xFinal < xInicial && yFinal < yInicial) return 7;
             };
 
+            // Função que atualiza a exibição da grade no elemento HTML
             const atualizarGrid = () => {
                 divGrid.innerHTML = "";
                 gridLetras.forEach((linha, indiceY) => {
@@ -278,7 +295,9 @@
                 });
             };
 
+             // Função que retorna as coordenadas da célula em relação ao elemento HTML
             const retornarCoordenadasCelula = (celulaX, celulaY) => {
+                  // Verifica se as coordenadas são válidas
                 if (celulaX === undefined
                     || celulaY === undefined
                     || celulaX < 0
@@ -287,6 +306,7 @@
                     || celulaY >= qtdeLinhas) {
                     throw new Error(`Célula[${celulaX}][${celulaY}] não encontrada.`)
                 }
+                // Calcula as coordenadas da célula com base no elemento HTML
                 const { left: gridLeft, top: gridTop } = divGrid.getBoundingClientRect();
                 const indice = celulaY * qtdeColunas + celulaX;
                 const celula = document.querySelectorAll(".grid-celula")[indice];
@@ -300,6 +320,7 @@
                 };
             };
 
+             // Função para desenhar a seleção de uma palavra
             const desenharSelecao = (contexto, inicial, final, orientacao, cor) => {
                 const rotacaoInicial = (orientacao * Math.PI) / 4.0;
                 const rotacaoFinal = rotacaoInicial + Math.PI;
@@ -319,6 +340,7 @@
                 contexto.fill();
             }
 
+            // Função para selecionar uma palavra no caça-palavras
             const selecionarPalavra = (contexto, objPalavra, cor) => {
                 const { xInicial, yInicial, xFinal, yFinal } = objPalavra;
                 const inicial = retornarCoordenadasCelula(xInicial, yInicial);
@@ -329,6 +351,7 @@
                 desenharSelecao(contexto, inicial, final, orientacao, cor);
             };
 
+             // Função para atualizar as palavras selecionadas no elemento canvas
             const atualizarPalavrasSelecionadas = () => {
                 const canvas = document.createElement("canvas");
                 canvas.classList.add("canvas-selecao-palavras");
@@ -337,12 +360,14 @@
                 canvas.setAttribute("height", rectGrid.height);
                 const ctx = canvas.getContext("2d");
 
+                 // Desenha a seleção para palavras circuladas
                 listaPalavras.forEach((objPalavra) => {
                     if (objPalavra.palavraEstaCirculada) {
                         selecionarPalavra(ctx, objPalavra, objPalavra.cor);
                     }
                 });
 
+                // Desenha a seleção para a palavra em andamento (seleçãoAtual)
                 const {
                     indiceInicialX: xInicial,
                     indiceInicialY: yInicial,
@@ -377,10 +402,12 @@
                 divGrid.appendChild(canvas);
             };
 
+            // Função para atualizar a lista de palavras no elemento HTML
             const atualizarListaPalavras = () => {
                 const ulListaPalavras = document.querySelector('.lista-palavras');
                 ulListaPalavras.innerHTML = '';
-
+                
+                // Ordena e exibe as palavras na lista
                 listaPalavras.sort().forEach(objPalavra => {
                     const liPalavra = document.createElement('li');
                     liPalavra.classList.add('item-palavra');
@@ -391,6 +418,7 @@
                     ulListaPalavras.appendChild(liPalavra);
                 });
 
+                //nao funciona, estava comentado antes. 
                 ulListaPalavras.addEventListener("click", function (event) {
                     if (event.target && event.target.matches("li.item-palavra")) {
                         console.log(event.target.innerText)
@@ -399,12 +427,14 @@
                 });
             };
 
+           // Função para atualizar a exibição da grade, palavras selecionadas e lista de palavras
             const atualizarGridNoDOM = () => {
                 atualizarGrid();
                 atualizarPalavrasSelecionadas();
                 atualizarListaPalavras();
             };
 
+            // Função para retornar as coordenadas da célula mais próxima do mouse
             const retornarCoordenadasCelulaMaisProximaMouse = (
                 mouseX,
                 mouseY,
@@ -437,6 +467,7 @@
                 return coordMaisProxima;
             };
 
+            // Função para circular uma palavra durante a interação com o mouse
             const circularPalavraMouse = (mouseX, mouseY, isMouseDown) => {
                 const coord = retornarCoordenadasCelulaMaisProximaMouse(mouseX, mouseY, inicioSelecao = !isMouseDown);
                 selecaoAtual = {
@@ -446,6 +477,7 @@
                 }
             };
 
+            // Função para iniciar a seleção de uma palavra com o mouse
             const iniciarSelecaoPalavraMouse = (mouseX, mouseY) => {
                 const coord = retornarCoordenadasCelulaMaisProximaMouse(mouseX, mouseY, inicioSelecao = true);
                 selecaoAtual = {
@@ -457,6 +489,7 @@
                 }
             };
 
+            // Função para finalizar a seleção de uma palavra com o mouse
             const finalizarSelecaoPalavraMouse = (mouseX, mouseY) => {
                 const coord = retornarCoordenadasCelulaMaisProximaMouse(mouseX, mouseY, inicioSelecao = false);
                 const selecao = {
@@ -467,6 +500,7 @@
                     cor: selecaoAtual.cor
                 }
 
+                // Verifica se a seleção corresponde a alguma palavra na lista e circula a palavra se necessário
                 listaPalavras.forEach((objPalavra) => {
                     const { xInicial, yInicial, xFinal, yFinal } = objPalavra;
                     if (!objPalavra.palavraEstaCirculada
@@ -492,6 +526,7 @@
                     }
                 });
 
+                // Limpa a seleção atual após o término
                 selecaoAtual = {
                     indiceInicialX: undefined,
                     indiceInicialY: undefined,
@@ -500,7 +535,8 @@
                     cor: colorWordBg
                 };
             };
-
+            
+            // Função para redefinir a seleção atual do mouse
             const limparSelecaoMouse = () => {
                 selecaoAtual = {
                     indiceInicialX: undefined,
@@ -511,6 +547,7 @@
                 };
             };
 
+            // Retorna um objeto com todas as funções disponíveis para interagir com o caça-palavras
             return {
                 inicializar,
                 adicionarPalavra,
@@ -523,11 +560,17 @@
             };
         }
 
+        // Seleciona o elemento da grade do caça-palavras no DOM
         const divGrid = document.querySelector(".grid-caca-palavras");
+         
+        // Cria a grade do caça-palavras com 15 linhas, 15 colunas e desabilita palavras invertidas
         const grid = createGrid(divGrid, 12, 12, { habilitarPalavrasInvertidas: false });
 
+        // Função para configurar o caça-palavras
         function setup() {
+           // Inicializa a grade do caça-palavras
             grid.inicializar();
+             // Lista de palavras para serem adicionadas ao caça-palavras
             const listaPalavras = [
                 "VERBO",
                 "SUBSTANTIVO",
@@ -538,42 +581,60 @@
                 "OBJETO",
             ];
 
+             // Adiciona as palavras ao caça-palavras
             listaPalavras.forEach((palavra, indice) => {
                 grid.adicionarPalavra(palavra);
                 //if(indice < 10) grid.circularPalavra(palavra);
             });
 
+            // Obtém as coordenadas de deslocamento do elemento da grade
             const { left: gridLeft, top: gridTop } = divGrid.getBoundingClientRect();
+            
+             // Variável para controlar se o botão do mouse está pressionado
             let isMouseDown = false;
 
+             // Adiciona um ouvinte para o movimento do mouse 
             document.body.addEventListener("mousemove", ({ clientX, clientY, target }) => {
+                // Verifica se o movimento ocorre dentro do canvas de seleção de palavras
                 if (target.classList.contains('canvas-selecao-palavras')) {
+                    // Chama a função para circular a palavra durante o movimento do mouse
                     grid.circularPalavraMouse(clientX - gridLeft, clientY - gridTop, isMouseDown);
                 }
                 else {
+                    // Limpa a seleção se o movimento ocorrer fora do canvas
                     grid.limparSelecaoMouse();
                 }
             });
 
+             // Adiciona um ouvinte para o clique do mouse na grade
             divGrid.addEventListener("mousedown", ({ clientX, clientY }) => {
+                // Define que o botão do mouse está pressionado
                 isMouseDown = true;
+                // Inicia a seleção da palavra com o clique do mouse
                 grid.iniciarSelecaoPalavraMouse(clientX - gridLeft, clientY - gridTop);
             });
 
+            // Adiciona um ouvinte para o evento de soltar o botão do mouse em qualquer parte do corpo
             document.body.addEventListener("mouseup", ({ clientX, clientY }) => {
+                // Define que o botão do mouse não está pressionado
                 isMouseDown = false
+                 // Finaliza a seleção da palavra com o evento de soltar o botão do mouse
                 grid.finalizarSelecaoPalavraMouse(clientX - gridLeft, clientY - gridTop);
             });
         }
 
+         // Função loop para atualizar a grade no DOM
         function loop() {
             grid.atualizarGridNoDOM();
         }
 
+         // Configuração inicial
         setup();
 
+          // Chama a função loop para atualizar a grade no DOM
         loop();
 
+        // Define um intervalo para chamar a função loop a cada 50 milissegundos
         const loopInterval = setInterval(() => {
             loop();
         }, 50);
