@@ -1,88 +1,77 @@
-import React from "react";
-import { Text, View, Dimensions, StyleSheet } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const Grid = ({ gridLetras, selecaoAtual, selecao, click }) => {
-  const { width, height } = Dimensions.get("window");
+const generateEmptyGrid = (rows, cols) => {
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => ({
+      letter: '',
+      selected: false,
+    }))
+  );
+};
+
+const App = () => {
+  const [grid, setGrid] = useState(generateEmptyGrid(10, 10));
+  const [selectedWord, setSelectedWord] = useState('');
+  
+  useEffect(() => {
+    // Your word generation and grid updating logic here
+    // You'll need to adapt the logic from your JavaScript code to work with React Native state
+  }, []);
+
+  const handleCellPress = (row, col) => {
+    // Handle cell selection logic
+  };
 
   return (
     <View style={styles.container}>
-      {gridLetras.map((linha, i) => (
-        <View key={i} style={styles.linha}>
-          {linha.map((letra, j) => (
-            <Text
-              key={j}
-              style={[
-                {
-                  fontSize: 20,
-                  textAlign: "center",
-                  backgroundColor: letra.ehFixa ? "white" : "transparent",
-                },
-                letra.palavraEstaCirculada && {
-                  backgroundColor: selecaoAtual.cor,
-                },
-                letra.palavraEstaCirculada && selecaoAtual.indiceInicialX === i && selecaoAtual.indiceInicialY === j && {
-                  backgroundColor: selecaoAtual.cor,
-                  borderRadius: 20,
-                },
-              ]}
-              onPress={() => click({ i, j })}
-            >
-              {letra.letra}
-            </Text>
-          ))}
-        </View>
-      ))}
+      <View style={styles.gridContainer}>
+        {grid.map((row, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            {row.map((cell, colIndex) => (
+              <TouchableOpacity
+                key={colIndex}
+                style={[
+                  styles.cell,
+                  cell.selected && styles.selectedCell,
+                ]}
+                onPress={() => handleCellPress(rowIndex, colIndex)}
+              >
+                <Text>{cell.letter}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </View>
+      <Text>Selected Word: {selectedWord}</Text>
+      {/* Add other UI elements and game information here */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width,
-    height,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  linha: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    width: "100%",
-    height: "100% / 6",
-    borderRadius: 10,
+  gridContainer: {
+    flexDirection: 'column',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  cell: {
+    width: 30,
+    height: 30,
+    borderWidth: 1,
+    borderColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  selectedCell: {
+    backgroundColor: 'yellow',
   },
 });
-
-const App = () => {
-  const [gridLetras, setGridLetras] = React.useState([
-    ["A", "B", "C", "D", "E", "F"],
-    ["G", "H", "I", "J", "K", "L"],
-    ["M", "N", "O", "P", "Q", "R"],
-    ["S", "T", "U", "V", "W", "X"],
-    ["Y", "Z", "1", "2", "3", "4"],
-    ["5", "6", "7", "8", "9", "10"],
-  ]);
-
-  const [selecaoAtual, setSelecaoAtual] = React.useState({
-    indiceInicialX: undefined,
-    indiceInicialY: undefined,
-    posicaoInicialX: undefined,
-    posicaoInicialY: undefined,
-    cor: "rgba(256, 20, 20, 0.3)",
-  });
-
-  const click = (posicao) => {
-    setSelecaoAtual({
-      ...selecaoAtual,
-      indiceInicialX: posicao.i,
-      indiceInicialY: posicao.j,
-      posicaoInicialX: posicao.x,
-      posicaoInicialY: posicao.y,
-    });
-  };
-
-  return (
-    <View style={{ flex: 1 }}>
-      <Grid gridLetras={gridLetras} selecaoAtual={selecaoAtual} click={click} />
-    </View>
-  );
-};
 
 export default App;
