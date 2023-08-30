@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Dimensions, StyleSheet } from "react-native";
 
-const Grid = ({ gridLetras, selecaoAtual, selecao, click }) => {
+const Grid = ({ gridLetras, selecaoAtual, click }) => {
   const { width, height } = Dimensions.get("window");
 
   return (
@@ -20,10 +20,12 @@ const Grid = ({ gridLetras, selecaoAtual, selecao, click }) => {
                 letra.palavraEstaCirculada && {
                   backgroundColor: selecaoAtual.cor,
                 },
-                letra.palavraEstaCirculada && selecaoAtual.indiceInicialX === i && selecaoAtual.indiceInicialY === j && {
-                  backgroundColor: selecaoAtual.cor,
-                  borderRadius: 20,
-                },
+                letra.palavraEstaCirculada &&
+                  selecaoAtual.indiceInicialX === i &&
+                  selecaoAtual.indiceInicialY === j && {
+                    backgroundColor: selecaoAtual.cor,
+                    borderRadius: 20,
+                  },
               ]}
               onPress={() => click({ i, j })}
             >
@@ -38,14 +40,14 @@ const Grid = ({ gridLetras, selecaoAtual, selecao, click }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width,
-    height,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   linha: {
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
-    height: "100% / 6",
+    height: Dimensions.get("window").height / 6, // Corrigido o cálculo da altura
     borderRadius: 10,
   },
 });
