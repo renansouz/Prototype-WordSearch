@@ -216,48 +216,17 @@
 
             // Função que adiciona uma palavra ao caça-palavras
             const adicionarPalavra = (palavra) => {
-                if (!palavra) { //nao usado. 
-                    return `Informe uma palavra válida.`;
-                }
-                if (listaPalavras.find(obj => obj.palavra === palavra.toUpperCase())) {
-                    return `Esta palavra já existe no caça-palavras.`;
-                }
-                if (palavra.length > Math.max(qtdeLinhas, qtdeColunas)) {
-                    return `A palavra '${palavra}' não cabe no caça-palavras.`;
-                } 
+              
                  // Lista todas as posições possíveis para a palavra
                 const listaPosicoes = listarPosicoesPossiveis(palavra.toUpperCase());
-                if (listaPosicoes.length === 0) {
-                    return (
-                        `Não foi encontrada nenhuma posição disponível para a palavra '${palavra}' no caça-palavras.`
-                    );
-                }
+
                   // Escolhe aleatoriamente uma posição da lista e adiciona a palavra lá
                 const indiceRandom = Math.floor(Math.random() * listaPosicoes.length);
                 adicionarPalavraNaPosicao(listaPosicoes[indiceRandom]);
             };
 
               // Função que circula ou desmarca uma palavra no caça-palavras
-            const circularPalavra = (palavra) => {
-                if (!palavra) { //nao usado. 
-                    throw new Error(`Informe uma palavra válida.`);
-                }
-                let objPalavra = listaPalavras.find(
-                    (p) => p.palavra === palavra.toUpperCase()
-                );
-                if (!objPalavra) { //nao usado.
-                    throw new Error(
-                        `A palavra '${palavra}' não foi encontrada no caça-palavras.`
-                    );
-                } // Alterna o status de circulação da palavra e redefine sua cor
-                if (objPalavra.palavraEstaCirculada) {
-                    objPalavra.palavraEstaCirculada = false;
-                }
-                else {
-                    objPalavra.palavraEstaCirculada = true;
-                    objPalavra.cor = colorWordBg;
-                }
-            };
+        
 
              // Função que retorna a orientação baseada nas coordenadas x e y das posições inicial e final
             const retornarOrientacao = ({ xInicial, yInicial, xFinal, yFinal }) => {
@@ -422,7 +391,7 @@
                 ulListaPalavras.addEventListener("click", function (event) {
                     if (event.target && event.target.matches("li.item-palavra")) {
                         console.log(event.target.innerText)
-                        circularPalavra(event.target.innerText)
+                        
                     }
                 });
             };
@@ -551,7 +520,6 @@
             return {
                 inicializar,
                 adicionarPalavra,
-                circularPalavra,
                 atualizarGridNoDOM,
                 circularPalavraMouse,
                 iniciarSelecaoPalavraMouse,

@@ -1,0 +1,47 @@
+import React, { Component } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+
+class CacaPalavras extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+        grid: [
+          ['A', 'B', 'C', 'D', 'E'],
+          ['F', 'G', 'H', 'I', 'J'],
+          ['K', 'L', 'M', 'N', 'O'],
+          ['P', 'Q', 'R', 'S', 'T'],
+          ['U', 'V', 'W', 'X', 'Y'],
+        ],
+        words: ['DOG', 'CAT', 'BIRD', 'FISH', 'LION'], // Lista de palavras
+        selectedCells: [], // Células selecionadas pelo jogador
+        foundWords: [], // Palavras encontradas pelo jogador
+      };
+  }
+
+  componentDidMount() {
+    // Configurar a grade de letras e palavras aqui
+    // Preencher this.state.grid e this.state.words
+  }
+
+  // Funções para selecionar palavras, verificar se uma palavra foi encontrada, etc.
+  
+  render() {
+    return (
+      <View style={styles.container}>
+        {/* Renderizar a grade de letras e a lista de palavras */}
+        {/* Adicionar eventos de toque (TouchableOpacity) para interatividade */}
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default CacaPalavras;
