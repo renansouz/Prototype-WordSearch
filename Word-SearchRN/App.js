@@ -3,29 +3,25 @@ import { View, Text, TouchableOpacity, StyleSheet, } from 'react-native';
 
 const generateEmptyGrid = (rows, cols) => {
 
-<<<<<<< HEAD
-  const letters = ["A", "B","C","D","E", "F","G", "H","I", "J","K", "L","M", "N", "O", "P","Q", "R","S", "T","U", "V","W", "X","Y", "Z"]
+  // const letters = ["A", "B","C","D","E", "F","G", "H","I", "J","K", "L","M", "N", "O", "P","Q", "R","S", "T","U", "V","W", "X","Y", "Z"]
 
-
-=======
   const gerarLetraAleatoria = () => {
     var indiceLetra = Math.floor(Math.random() * 26);
   
     return String.fromCharCode(65 + indiceLetra);
   }
->>>>>>> f1caa61bf1a73a3912c00fef3061414f5dc311fa
-  const wordsToFind = ["REACT", "NATIVE", "JAVASCRIPT", "DEVELOPMENT"];
 
+  const wordsToFind = ["REACT", "NATIVE"];
+
+  var contX = 0
+  var contY = 0
 
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
-<<<<<<< HEAD
-      letter: letters,
-=======
+      if(){},
       letter: (gerarLetraAleatoria()),
->>>>>>> f1caa61bf1a73a3912c00fef3061414f5dc311fa
       selected: false,
-    }))
+    })),
   );
 };
 
@@ -36,32 +32,24 @@ const App = () => {
   useEffect(() => {
     // Função para gerar palavras e preencher o grid
     const generateGrid = () => {
-      // Lógica para gerar palavras aleatórias e preencher o grid
-      // Você precisa implementar essa lógica de acordo com as suas regras do jogo.
-      // Certifique-se de que as palavras não se cruzem e não haja sobreposição.
-      // Atualize o estado do grid com as letras geradas.
+
   
       const newGrid = generateEmptyGrid(10, 10); // Use a função generateEmptyGrid para criar um grid vazio.
   
-      // Preencha o grid com letras e palavras aleatórias
-      // Certifique-se de atualizar o estado do grid e as palavras do jogo conforme necessário.
+
   
       return newGrid;
     };
   
     // Inicialize o estado do grid chamando a função de geração
     setGrid(generateGrid());
-  
-    // Dependências vazias [] garantem que este efeito seja executado apenas uma vez, durante a montagem do componente.
-  
-    // Adicione qualquer outra lógica necessária aqui, como definir as palavras do jogo e verificar quando todas são encontradas.
+
   }, []);
 
 const handleCellPress = (row, col) => {
 
   const updatedGrid = [...grid]; //variável responsável por recarregar a grade em sua forma padrão
-  
-  
+
   // verifica se a célula está ou não selecionada
   if (updatedGrid[row][col].selected) {
     updatedGrid[row][col].selected = false;
@@ -72,16 +60,20 @@ const handleCellPress = (row, col) => {
     // Atualizar a palavra selecionada com a letra da célula
     const letter = updatedGrid[row][col].letter;
 
-    if(updatedGrid[row][col].selected){
+
+
+    if(updatedGrid[row][col].selected == true){
       setSelectedWord(selectedWord + letter);
-    }else {
-      setSelectedWord(selectedWord - letter)
+    }else{
+      
     }
   }
 
   // Atualiza a grade puxando a const criada acima
   setGrid(updatedGrid);
 };
+
+
 
   return (
     <View style={styles.container}>
