@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, } from 'react-native';
 
 const generateEmptyGrid = (rows, cols) => {
 
-  const letters = Math.random(["A", "B","C","D","E", "F","G", "H","I", "J","K", "L","M", "N", "O", "P","Q", "R","S", "T","U", "V","W", "X","Y", "Z"])
+  const letters = ["A", "B","C","D","E", "F","G", "H","I", "J","K", "L","M", "N", "O", "P","Q", "R","S", "T","U", "V","W", "X","Y", "Z"]
+
+
   const wordsToFind = ["REACT", "NATIVE", "JAVASCRIPT", "DEVELOPMENT"];
 
 
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
-      letter: (letters),
+      letter: letters,
       selected: false,
     }))
   );
