@@ -3,15 +3,27 @@ import { View, Text, TouchableOpacity, StyleSheet, } from 'react-native';
 
 const generateEmptyGrid = (rows, cols) => {
 
+<<<<<<< HEAD
   const letters = ["A", "B","C","D","E", "F","G", "H","I", "J","K", "L","M", "N", "O", "P","Q", "R","S", "T","U", "V","W", "X","Y", "Z"]
 
 
+=======
+  const gerarLetraAleatoria = () => {
+    var indiceLetra = Math.floor(Math.random() * 26);
+  
+    return String.fromCharCode(65 + indiceLetra);
+  }
+>>>>>>> f1caa61bf1a73a3912c00fef3061414f5dc311fa
   const wordsToFind = ["REACT", "NATIVE", "JAVASCRIPT", "DEVELOPMENT"];
 
 
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
+<<<<<<< HEAD
       letter: letters,
+=======
+      letter: (gerarLetraAleatoria()),
+>>>>>>> f1caa61bf1a73a3912c00fef3061414f5dc311fa
       selected: false,
     }))
   );
