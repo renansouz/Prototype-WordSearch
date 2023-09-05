@@ -411,7 +411,7 @@
             ) => {
                 const divGrid = document.querySelector(".grid-caca-palavras");
                 rectGrid = divGrid.getBoundingClientRect();
-                let coordMaisProxima = { indiceX: -1, indiceY: -1, distancia: 10000 };
+                let coordMaisProxima = { indiceX: -1, indiceY: -1, distancia: 100 };
 
                 divGrid.querySelectorAll(".grid-celula").forEach((divCelula) => {
                     const indiceX = parseInt(divCelula.getAttribute("data-indice-x"));
