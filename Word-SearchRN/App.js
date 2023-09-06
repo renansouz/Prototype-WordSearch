@@ -6,13 +6,13 @@ class WordSearchGame extends Component {
     super(props);
     this.state = {
       gridLetras: this.gerarGridAleatorio(),
-      listaPalavras: ['CAT', 'RULES', 'DOGS', 'TIGER', 'STARS'],
+      listaPalavras: ['HISTORIA', 'CIENCIA', 'MATEMATICA', 'INGLES', 'PORTUGUES'],
       palavrasEncontradas: [],
     };
   }
 
   gerarGridAleatorio = () => {
-    const letrasPossiveis = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const letrasPossiveis = '';
     const gridSize = 12; // Tamanho do grid
     const grid = [];
 
