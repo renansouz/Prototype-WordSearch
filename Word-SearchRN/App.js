@@ -33,11 +33,11 @@ class WordSearchGame extends Component {
     const gridSize = gridLetras.length;
 
     // Escolhe aleatoriamente uma direção (horizontal ou vertical)
-    const isHorizontal = Math.random() < 0.5;
+    const isHorizontal = Math.random() < 0.5 ;
 
     if (isHorizontal) {
       const y = Math.floor(Math.random() * gridSize);
-      const x = Math.floor(Math.random() * (gridSize - palavra.length + 1));
+      const x = Math.floor(Math.random() * (gridSize - palavra.length +1));
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y][x + i] = palavra[i];
       }
