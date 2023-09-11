@@ -12,15 +12,13 @@ class WordSearchGame extends Component {
   }
 
   gerarGridAleatorio = () => {
-    const letrasPossiveis = '';
     const gridSize = 12; // Tamanho do grid
     const grid = [];
 
     for (let i = 0; i < gridSize; i++) {
       const row = [];
       for (let j = 0; j < gridSize; j++) {
-        const randomIndex = Math.floor(Math.random() * letrasPossiveis.length);
-        row.push(letrasPossiveis.charAt(randomIndex));
+        row.push('');
       }
       grid.push(row);
     }
@@ -32,24 +30,52 @@ class WordSearchGame extends Component {
     const { gridLetras } = this.state;
     const gridSize = gridLetras.length;
 
-    // Escolhe aleatoriamente uma direção (horizontal ou vertical)
-    const isHorizontal = Math.random() < 0.5 ;
+    const directions = ['horizontal', 'vertical'];
+    const selectedDirection = directions[Math.floor(Math.random() * directions.length)];
 
-    if (isHorizontal) {
-      const y = Math.floor(Math.random() * gridSize);
-      const x = Math.floor(Math.random() * (gridSize - palavra.length +1));
+    if (selectedDirection === 'horizontal') {
+      let x, y;
+      do {
+        x = Math.floor(Math.random() * (gridSize - palavra.length + 1));
+        y = Math.floor(Math.random() * gridSize);
+      } while (!this.ehPosicaoValida(gridLetras, palavra, x, y, 'horizontal'));
+
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y][x + i] = palavra[i];
       }
     } else {
-      const x = Math.floor(Math.random() * gridSize);
-      const y = Math.floor(Math.random() * (gridSize - palavra.length + 1));
+      let x, y;
+      do {
+        x = Math.floor(Math.random() * gridSize);
+        y = Math.floor(Math.random() * (gridSize - palavra.length + 1));
+      } while (!this.ehPosicaoValida(gridLetras, palavra, x, y, 'vertical'));
+
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y + i][x] = palavra[i];
       }
     }
 
     this.setState({ gridLetras });
+  };
+
+  ehPosicaoValida = (grid, palavra, x, y, direcao) => {
+    const gridSize = grid.length;
+
+    if (direcao === 'horizontal') {
+      for (let i = 0; i < palavra.length; i++) {
+        if (grid[y][x + i] !== '' && grid[y][x + i] !== palavra[i]) {
+          return false;
+        }
+      }
+    } else {
+      for (let i = 0; i < palavra.length; i++) {
+        if (grid[y + i][x] !== '' && grid[y + i][x] !== palavra[i]) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   };
 
   componentDidMount() {
