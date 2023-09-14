@@ -6,25 +6,26 @@ class WordSearchGame extends Component {
     super(props);
     this.state = {
       gridLetras: this.gerarGridAleatorio(),
-      listaPalavras: ['HISTORIA', 'CIENCIA', 'MATEMATICA', 'INGLES', 'PORTUGUES'],
-      palavrasEncontradas: [],
+      listaPalavras: ['HISTÓRIA', 'CIÊNCIA', 'MATEMÁTICA', 'INGLÊS', 'PORTUGUÊS'],
+      palavrasEncontradas: [],  
     };
   }
 
   gerarGridAleatorio = () => {
-    const gridSize = 12; // Tamanho do grid
-    const grid = [];
-
-    for (let i = 0; i < gridSize; i++) {
-      const row = [];
-      for (let j = 0; j < gridSize; j++) {
-        row.push('');
+      const gridSizeX = 17; // Tamanho do grid horizontal
+      const gridSizeY = 12; // Tamanho do grid vertical
+      const grid = [];
+  
+      for (let i = 0; i < gridSizeX; i++) {
+        const row = [];
+        for (let j = 0; j < gridSizeY; j++) {
+          row.push('');
+        }
+        grid.push(row);
       }
-      grid.push(row);
-    }
-
-    return grid;
-  };
+  
+      return grid;
+    };
 
   adicionarPalavraAoGrid = (palavra) => {
     const { gridLetras } = this.state;
@@ -148,7 +149,8 @@ class WordSearchGame extends Component {
         <View style={styles.wordList}>
           <Text>Palavras a encontrar:</Text>
           {this.state.listaPalavras.map((palavra, index) => (
-            <Text key={index} style={this.state.palavrasEncontradas.includes(palavra) && styles.foundWord}>
+            <Text key={index} 
+            style={this.state.palavrasEncontradas.includes(palavra) && styles.foundWord}>
               {palavra}
             </Text>
           ))}
