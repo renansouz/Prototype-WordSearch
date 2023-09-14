@@ -130,7 +130,6 @@ class WordSearchGame extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Caça-Palavras</Text>
         <View style={styles.grid}>
           {this.state.gridLetras.map((row, rowIndex) => (
             <View key={rowIndex} style={styles.row}>
@@ -144,15 +143,6 @@ class WordSearchGame extends Component {
                 </TouchableOpacity>
               ))}
             </View>
-          ))}
-        </View>
-        <View style={styles.wordList}>
-          <Text>Palavras a encontrar:</Text>
-          {this.state.listaPalavras.map((palavra, index) => (
-            <Text key={index} 
-            style={this.state.palavrasEncontradas.includes(palavra) && styles.foundWord}>
-              {palavra}
-            </Text>
           ))}
         </View>
       </View>
@@ -182,9 +172,7 @@ const styles = StyleSheet.create({
   foundCell: {
     backgroundColor: 'green',
   },
-  wordList: {
-    marginTop: 20,
-  },
+  
   foundWord: {
     textDecorationLine: 'line-through',
     color: 'green',
