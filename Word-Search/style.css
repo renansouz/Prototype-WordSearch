@@ -100,7 +100,7 @@ body{
     border: 2px solid #ccc;
     background-color: #eee;
     padding: 5px;
-    width: min(70vw, 70vh);
+    width: min(50vw, 50vh);
     height: min(70vw, 70vh);
     margin: auto;
   }
@@ -166,4 +166,11 @@ body{
   
   .form-cadastrar-palavra{
     width: 100%;
+  }
+
+  @media (min-width: 500px) and (max-width: 700px) {
+    .grid-caca-palavras{
+      width: min(50vw, 50vh);
+      height: min(50vw, 50vh);
+    }
   }
