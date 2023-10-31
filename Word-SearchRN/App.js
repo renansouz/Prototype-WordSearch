@@ -106,31 +106,35 @@ class WordSearchGame extends Component {
   }
 
   handleCellClick = (x, y) => {
-    const letra = this.state.gridLetras[y][x];
-    if (!letra) return; // Célula vazia
-
-    const palavraEncontrada = this.state.listaPalavras.find((palavra) =>
-      this.palavraContemCoordenada(palavra, x, y)
-    );
-
-    if (palavraEncontrada) {
-      this.setState(
-        (prevState) => ({
-          palavrasEncontradas: [
-            ...prevState.palavrasEncontradas,
-            palavraEncontrada,
-          ],
-        }),
-        () => {
-          if (
-            this.state.palavrasEncontradas.length ===
-            this.state.listaPalavras.length
-          ) {
-            Alert.alert("Parabéns!", "Você encontrou todas as palavras.");
-          }
-        }
+    const letra = this.state.gridLetras;
+    
+    if (!letra) {
+      return
+    } // Célula vazia
+      const palavraEncontrada = this.state.listaPalavras.find((palavra) =>
+        this.palavraContemCoordenada(palavra, x, y)
       );
-    }
+
+  
+   if (
+     palavraEncontrada
+   ) {
+     this.setState(
+       (prevState) => ({
+         palavrasEncontradas: [
+           ...prevState.palavrasEncontradas,
+           palavraEncontrada,
+         ],
+}),
+       () => {
+         if (
+           this.state.palavrasEncontradas.length === this.state.listaPalavras.length
+         ) {
+           Alert.alert("Parabéns!", "Você encontrou todas as palavras.");
+         }
+       }
+     );
+   }
   };
 
   palavraContemCoordenada = (palavra, x, y) => {
