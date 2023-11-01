@@ -105,37 +105,13 @@ class WordSearchGame extends Component {
     this.preencherGridComLetrasAleatorias();
   }
 
-  handleCellClick = (x, y) => {
-    const letra = this.state.gridLetras;
-    
-    if (!letra) {
-      return
-    } // Célula vazia
-      const palavraEncontrada = this.state.listaPalavras.find((palavra) =>
-        this.palavraContemCoordenada(palavra, x, y)
-      );
-
+  handleCellClick = (columnIndex, rowIndex) => { 
+       if (TouchableOpacity === this.state.listaPalavras){
+        alert("voce achou uma palavra!");}
   
-   if (
-     palavraEncontrada
-   ) {
-     this.setState(
-       (prevState) => ({
-         palavrasEncontradas: [
-           ...prevState.palavrasEncontradas,
-           palavraEncontrada,
-         ],
-}),
-       () => {
-         if (
-           this.state.palavrasEncontradas.length === this.state.listaPalavras.length
-         ) {
-           Alert.alert("Parabéns!", "Você encontrou todas as palavras.");
-         }
-       }
-     );
-   }
-  };
+};
+
+
 
   palavraContemCoordenada = (palavra, x, y) => {
     const dx = [0, 1, 1, 1, 0, -1, -1, -1];
@@ -170,7 +146,7 @@ class WordSearchGame extends Component {
                   key={columnIndex}
                   style={[
                     styles.cell,
-                    this.state.palavrasEncontradas.includes(cell) &&
+                    this.state.palavrasEncontrada.includes(cell) &&
                       styles.foundCell,
                   ]}
                   onPress={() => this.handleCellClick(columnIndex, rowIndex)}
