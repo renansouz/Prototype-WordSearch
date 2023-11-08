@@ -124,12 +124,21 @@ class WordSearchGame extends Component {
     var palavre = [y, x]
     const array = this.state.certos
     console.log(palavre)
-
-    if (array.includes(palavre)) {
-      alert("Acertou seu troxa")
-
+    
+    verificaCasa(palavre,array)
+    //copiar o codigo do e-mail e otimizar pra ca
+    
+  }
+  verificaCasa(arr1, arr2){
+    if (arr1.length !== arr2.length) {
+      return false;
     }
-
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
 
