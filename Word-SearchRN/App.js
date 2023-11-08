@@ -8,9 +8,10 @@ class WordSearchGame extends Component {
       gridLetras: this.gerarGridAleatorio(),
       listaPalavras: ["ááááááá", "óóóóóóó", "úúúúúúú", "ííííííí", "ééééééé"],
       palavrasEncontradas: [],
+      certos: []
+
     };
   }
-
   gerarGridAleatorio = () => {
     const gridSizeX = 17; // Tamanho do grid horizontal
     const gridSizeY = 12; // Tamanho do grid vertical
@@ -47,7 +48,6 @@ class WordSearchGame extends Component {
   adicionarPalavraAoGrid = (palavra) => {
     const { gridLetras } = this.state;
     const gridSize = gridLetras.length;
-
     const directions = ["horizontal", "vertical"];
     const selectedDirection =
       directions[Math.floor(Math.random() * directions.length)];
@@ -61,6 +61,7 @@ class WordSearchGame extends Component {
 
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y][x + i] = palavra[i];
+        this.state.certos.push([y, x+i])
       }
     } else {
       let x, y;
@@ -71,9 +72,10 @@ class WordSearchGame extends Component {
 
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y + i][x] = palavra[i];
+        this.state.certos.push([y+i, x])
       }
     }
-
+    
     this.setState({ gridLetras });
   };
 
@@ -105,23 +107,30 @@ class WordSearchGame extends Component {
     this.preencherGridComLetrasAleatorias();
   }
 
-  handleCellClick = (x, y) => { 
-      let letra = this.state.gridLetras[y][x];
-    
-      if (!letra) return;
+  coordenadaPalavra(palavra) {
+    palavra = this.state.listaPalavras
+  }
 
-       const palavraEncontrada = this.state.listaPalavras.find((palavra) =>
-         this.palavraContemCoordenada(palavra, x, y)
-       );
+  handleCellClick(y,x) {
+    this.state.palavrasEncontradas.push([y, x])
+    console.log(this.state.palavrasEncontradas)
+    console.log(this.state.certos)
+    this.verificaçãoAcerto(y,x)
 
-       if (letra != ) {
-         Alert.alert("Parabéns!", "Você encontrou todas as palavras.");
-       } else {
-         return;
-       }
-  
-};
 
+  }
+
+  verificaçãoAcerto(y, x) {
+    var palavre = [y, x]
+    const array = this.state.certos
+    console.log(palavre)
+
+    if (array.includes(palavre)) {
+      alert("Acertou seu troxa")
+
+    }
+
+  }
 
 
   palavraContemCoordenada = (palavra, x, y) => {
@@ -132,10 +141,10 @@ class WordSearchGame extends Component {
       if (
         x + i * dx.every((val) => val === dx[0]) >= 0 &&
         x + i * dx.every((val) => val === dx[0]) <
-          this.state.gridLetras[0].length &&
+        this.state.gridLetras[0].length &&
         y + i * dy.every((val) => val === dy[0]) >= 0 &&
         y + i * dy.every((val) => val === dy[0]) <
-          this.state.gridLetras.length &&
+        this.state.gridLetras.length &&
         palavra[i] === this.state.gridLetras[y + i * dy[0]][x + i * dx[0]]
       ) {
         continue;
@@ -158,9 +167,9 @@ class WordSearchGame extends Component {
                   style={[
                     styles.cell,
                     this.state.palavrasEncontradas.includes(cell) &&
-                      styles.foundCell,
+                    styles.foundCell,
                   ]}
-                  onPress={() => this.handleCellClick(columnIndex, rowIndex)}
+                  onPress={() => this.handleCellClick(rowIndex, columnIndex)}
                 >
                   <Text>{cell}</Text>
                 </TouchableOpacity>
