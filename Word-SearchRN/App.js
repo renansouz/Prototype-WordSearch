@@ -12,6 +12,8 @@ class WordSearchGame extends Component {
 
     };
   }
+
+  
   gerarGridAleatorio = () => {
     const gridSizeX = 17; // Tamanho do grid horizontal
     const gridSizeY = 12; // Tamanho do grid vertical
@@ -110,59 +112,46 @@ class WordSearchGame extends Component {
   coordenadaPalavra(palavra) {
     palavra = this.state.listaPalavras
   }
+    verificaCasa(tentativa,certas){
+       tentativa = this.state.palavrasEncontradas
+       certas = this.state.certos
+   
+       for (let i = 0; i < certas.length; i++) {
+      const currentArray = certas[i];
+      if (this.validacao(tentativa, currentArray)) {
+        // Aqui você pode aplicar as condições desejadas quando a igualdade é encontrada.
+        console.log("palavre é igual a um dos arrays em certos");
+        // ... Suas condições e ações aqui ...
+        return; // Saia do loop se a igualdade for encontrada
+      }
+       
+      
+    }
+    // Se o loop terminar sem encontrar uma igualdade, você pode aplicar outras condições.
+    console.log("palavre não é igual a nenhum dos arrays em certos");
+    // ... Outras condições e ações aqui ...
+    }
+  
+    
+  validacao(arr1, arr2){
+    if (arr1.length !== arr2.length) {
+      return false
+    }
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false
+      }
+    }
+  }
 
   handleCellClick(y,x) {
     this.state.palavrasEncontradas.push([y, x])
     console.log(this.state.palavrasEncontradas)
     console.log(this.state.certos)
-    this.verificaçãoAcerto(y,x)
-
-
+    this.verificaCasa()
   }
+ 
 
-  verificaçãoAcerto(y, x) {
-    var palavre = [y, x]
-    const array = this.state.certos
-    console.log(palavre)
-    
-    verificaCasa(palavre,array)
-    //copiar o codigo do e-mail e otimizar pra ca
-    
-  }
-  verificaCasa(arr1, arr2){
-    if (arr1.length !== arr2.length) {
-      return false;
-    }
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-
-  palavraContemCoordenada = (palavra, x, y) => {
-    const dx = [0, 1, 1, 1, 0, -1, -1, -1];
-    const dy = [-1, -1, 0, 1, 1, 1, 0, -1];
-
-    for (let i = 0; i < palavra.length; i++) {
-      if (
-        x + i * dx.every((val) => val === dx[0]) >= 0 &&
-        x + i * dx.every((val) => val === dx[0]) <
-        this.state.gridLetras[0].length &&
-        y + i * dy.every((val) => val === dy[0]) >= 0 &&
-        y + i * dy.every((val) => val === dy[0]) <
-        this.state.gridLetras.length &&
-        palavra[i] === this.state.gridLetras[y + i * dy[0]][x + i * dx[0]]
-      ) {
-        continue;
-      } else {
-        return false;
-      }
-    }
-    return true;
-  };
 
   render() {
     return (
