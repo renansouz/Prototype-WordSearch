@@ -8,7 +8,8 @@ class WordSearchGame extends Component {
       gridLetras: this.gerarGridAleatorio(),
       listaPalavras: ["ááááááá", "óóóóóóó", "úúúúúúú", "ííííííí", "ééééééé"],
       palavrasEncontradas: [],
-      certos: []
+      certos: [],
+      palavrasTentadas:[],
 
     };
   }
@@ -112,8 +113,12 @@ class WordSearchGame extends Component {
   coordenadaPalavra(palavra) {
     palavra = this.state.listaPalavras
   }
+
+  //seleção das palavras
+
+  
     verificaCasa(tentativa,certas){
-       tentativa = this.state.palavrasEncontradas
+       tentativa = this.state.palavrasTentadas
        certas = this.state.certos
    
        for (let i = 0; i < certas.length; i++) {
@@ -133,26 +138,29 @@ class WordSearchGame extends Component {
     }
   
     
-  validacao(arr1, arr2){
-    if (arr1.length !== arr2.length) {
-      return false
+    validacao(){
+
+      let identicalElements = [];
+  
+      this.state.palavrasTentadas.forEach((palavrasTentadas) => {
+        this.state.certos.forEach((certos) => {
+          if (palavrasTentadas['code'] === certos['code'])
+            identicalElements.push(palavrasTentadas['code']);
+      });
+      });
+  
+      console.log();
     }
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false
-      }
-    }
-  }
+  
 
   handleCellClick(y,x) {
-    this.state.palavrasEncontradas.push([y, x])
-    console.log(this.state.palavrasEncontradas)
+    this.state.palavrasTentadas.push([y, x])
+    console.log(this.state.palavrasTentadas)
     console.log(this.state.certos)
     this.verificaCasa()
   }
  
-
-
+  
   render() {
     return (
       <View style={styles.container}>
