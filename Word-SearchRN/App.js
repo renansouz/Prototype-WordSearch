@@ -10,6 +10,7 @@ class WordSearchGame extends Component {
       palavrasEncontradas: [],
       certos: [],
       palavrasTentadas:[],
+      c:[]
 
     };
   }
@@ -50,6 +51,7 @@ class WordSearchGame extends Component {
 
   adicionarPalavraAoGrid = (palavra) => {
     const { gridLetras } = this.state;
+  var r =""
     const gridSize = gridLetras.length;
     const directions = ["horizontal", "vertical"];
     const selectedDirection =
@@ -72,12 +74,25 @@ class WordSearchGame extends Component {
         x = Math.floor(Math.random() * gridSize);
         y = Math.floor(Math.random() * (gridSize - palavra.length + 1));
       } while (!this.ehPosicaoValida(gridLetras, palavra, x, y, "vertical"));
-
+      
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y + i][x] = palavra[i];
+        // r e c foram criados e não funcionam
+        r += x+""+y
+        this.state.c.push([y+i, x]) 
+        let string = "";
+        for (const row of this.state.c) {
+          for (const cell of row) {
+          string += cell;
+         }
+        }
+
+         console.log(string);
+        console.log(this.state.c)     
         this.state.certos.push([y+i, x])
       }
     }
+    
     
     this.setState({ gridLetras });
   };
@@ -117,53 +132,78 @@ class WordSearchGame extends Component {
   //seleção das palavras
 
   
-    verificaCasa(tentativa,certas){
-       tentativa = this.state.palavrasTentadas
-       certas = this.state.certos
-       function compareArrays(a1, a2) {
-        return a1.every((value, index) => value === a2[index]);
-      }
-      console.log(certas[2])
-      console.log(compareArrays(tentativa, certas[2]))
-       for (let i = 0; i < certas.length; i++) {
-      const currentArray = certas[i];
-      if (this.validacao(tentativa, currentArray)) {
-        // Aqui você pode aplicar as condições desejadas quando a igualdade é encontrada.
-        console.log("palavre é igual a um dos arrays em certos");
-        // ... Suas condições e ações aqui ...
-        return; // Saia do loop se a igualdade for encontrada
-      }else{
-          console.log("palavre não é igual a nenhum dos arrays em certos");
-      }
+  //   verificaCasa(tentativa,certas){
+  //      tentativa = this.state.palavrasTentadas
+  //      certas = this.state.certos
+  //     //  function compareArrays(a1, a2) {
+  //     //   return a1.every((value, index) => value === a2[index]);
+  //     // }
+  //     // console.log(certas[2])
+  //     // console.log(compareArrays(tentativa, certas[2]))
+  //      for (let i = 0; i < certas.length; i++) {
+  //     const currentArray = certas[i];
+  //     if (this.validacao(tentativa, currentArray)) {
+  //       // Aqui você pode aplicar as condições desejadas quando a igualdade é encontrada.
+  //       console.log("palavre é igual a um dos arrays em certos");
+  //       // ... Suas condições e ações aqui ...
+  //       return; // Saia do loop se a igualdade for encontrada
+  //     }else{
+  //         console.log("palavre não é igual a nenhum dos arrays em certos");
+  //     }
        
       
-    }
+  //   }
 
-    // Se o loop terminar sem encontrar uma igualdade, você pode aplicar outras condições.
+  //   // Se o loop terminar sem encontrar uma igualdade, você pode aplicar outras condições.
 
-    // ... Outras condições e ações aqui ...
-    }
+  //   // ... Outras condições e ações aqui ...
+  //   }
   
-        validacao(arr1, arr2){
-    if (arr1.length !== arr2.length) {
-      return false;
-    }
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
+  //       validacao(arr1, arr2){
+  //   if (arr1.length !== arr2.length) {
+  //     return false;
+  //   }
+  //   for (let i = 0; i < arr1.length; i++) {
+  //     if (arr1[i] !== arr2[i]) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // }
   
 
   handleCellClick(y,x) {
     this.state.palavrasTentadas.push([y, x])
     console.log(this.state.palavrasTentadas)
     console.log(this.state.certos)
-    this.verificaCasa()
+    
+    let string = "";
+    for (const row of this.state.palavrasTentadas) {
+      for (const cell of row) {
+      string += cell;
+    }
+}
+
+console.log(string);
+    // this.verificaCasa()
+    
+    let stri= "";
+    for (const row of this.state.certos) {
+    for (const cell of row) {
+    stri += cell;
   }
+  stri += "\n";
+}
+
+console.log(stri);
+  // this.verificaCasa()
+  
+}
+  
+
  
+
+   
   
   render() {
     return (
