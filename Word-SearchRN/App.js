@@ -120,7 +120,11 @@ class WordSearchGame extends Component {
     verificaCasa(tentativa,certas){
        tentativa = this.state.palavrasTentadas
        certas = this.state.certos
-   
+       function compareArrays(a1, a2) {
+        return a1.every((value, index) => value === a2[index]);
+      }
+      console.log(certas[2])
+      console.log(compareArrays(tentativa, certas[2]))
        for (let i = 0; i < certas.length; i++) {
       const currentArray = certas[i];
       if (this.validacao(tentativa, currentArray)) {
@@ -128,29 +132,29 @@ class WordSearchGame extends Component {
         console.log("palavre é igual a um dos arrays em certos");
         // ... Suas condições e ações aqui ...
         return; // Saia do loop se a igualdade for encontrada
+      }else{
+          console.log("palavre não é igual a nenhum dos arrays em certos");
       }
        
       
     }
+
     // Se o loop terminar sem encontrar uma igualdade, você pode aplicar outras condições.
-    console.log("palavre não é igual a nenhum dos arrays em certos");
+
     // ... Outras condições e ações aqui ...
     }
   
-    
-    validacao(){
-
-      let identicalElements = [];
-  
-      this.state.palavrasTentadas.forEach((palavrasTentadas) => {
-        this.state.certos.forEach((certos) => {
-          if (palavrasTentadas['code'] === certos['code'])
-            identicalElements.push(palavrasTentadas['code']);
-      });
-      });
-  
-      console.log();
+        validacao(arr1, arr2){
+    if (arr1.length !== arr2.length) {
+      return false;
     }
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
   
 
   handleCellClick(y,x) {
