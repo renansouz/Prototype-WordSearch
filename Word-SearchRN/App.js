@@ -1,21 +1,21 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 class WordSearchGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       gridLetras: this.gerarGridAleatorio(),
-      listaPalavras: ["ááááááá", "óóóóóóó", "úúúúúúú", "ííííííí", "ééééééé"],
+      listaPalavras: ["GABRIEL", "RENAN", "MURILO", "MARCELO", "DIEGO"],
       palavrasEncontradas: [],
       certos: [],
-      palavrasTentadas:[],
-      c:[]
-
+      palavrasTentadas: [],
+      c: "",
+      crip: [],
+      itemColors: Array.from({ length: 204 }, () => Array(204).fill("white")),
     };
   }
 
-  
   gerarGridAleatorio = () => {
     const gridSizeX = 17; // Tamanho do grid horizontal
     const gridSizeY = 12; // Tamanho do grid vertical
@@ -34,7 +34,7 @@ class WordSearchGame extends Component {
 
   preencherGridComLetrasAleatorias = () => {
     const { gridLetras } = this.state;
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // Letras possíveis
+    const alphabet = "."; // Letras possíveis
 
     for (let i = 0; i < gridLetras.length; i++) {
       for (let j = 0; j < gridLetras[i].length; j++) {
@@ -51,7 +51,6 @@ class WordSearchGame extends Component {
 
   adicionarPalavraAoGrid = (palavra) => {
     const { gridLetras } = this.state;
-  var r =""
     const gridSize = gridLetras.length;
     const directions = ["horizontal", "vertical"];
     const selectedDirection =
@@ -66,34 +65,33 @@ class WordSearchGame extends Component {
 
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y][x + i] = palavra[i];
-        this.state.certos.push([y, x+i])
+        this.state.certos.push([y, x + i]);
+        this.state.c += y + "" + (x + i);
       }
+
+      var indicador = this.state.crip.length;
+      this.state.crip[indicador + 1] = this.state.c;
+      this.state.c = "";
     } else {
       let x, y;
       do {
         x = Math.floor(Math.random() * gridSize);
         y = Math.floor(Math.random() * (gridSize - palavra.length + 1));
       } while (!this.ehPosicaoValida(gridLetras, palavra, x, y, "vertical"));
-      
+
       for (let i = 0; i < palavra.length; i++) {
         gridLetras[y + i][x] = palavra[i];
-        // r e c foram criados e não funcionam
-        r += x+""+y
-        this.state.c.push([y+i, x]) 
-        let string = "";
-        for (const row of this.state.c) {
-          for (const cell of row) {
-          string += cell;
-         }
-        }
-
-         console.log(string);
-        console.log(this.state.c)     
-        this.state.certos.push([y+i, x])
+        this.state.certos.push([y + i, x]);
+        this.state.c += y + i + "" + x;
       }
+
+      var indicador = this.state.crip.length;
+      this.state.crip[indicador + 1] = this.state.c;
+      this.state.c = "";
     }
-    
-    
+
+    console.log(this.state.crip);
+
     this.setState({ gridLetras });
   };
 
@@ -117,6 +115,27 @@ class WordSearchGame extends Component {
     return true;
   };
 
+  // Método para verificar se a célula clicada é adjacente à última célula clicada
+  ehCelulaAdjacente = (lastRow, lastColumn, currentRow, currentColumn) => {
+    const direcoesPermitidas = [
+      [-1, 0], // para cima
+      [1, 0], // para baixo
+      [0, -1], // para a esquerda
+      [0, 1], // para a direita
+    ];
+
+    for (const [rowOffset, columnOffset] of direcoesPermitidas) {
+      const newRow = lastRow + rowOffset;
+      const newColumn = lastColumn + columnOffset;
+
+      if (newRow === currentRow && newColumn === currentColumn) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   componentDidMount() {
     this.state.listaPalavras.forEach((palavra) => {
       this.adicionarPalavraAoGrid(palavra);
@@ -125,99 +144,85 @@ class WordSearchGame extends Component {
     this.preencherGridComLetrasAleatorias();
   }
 
-  coordenadaPalavra(palavra) {
-    palavra = this.state.listaPalavras
-  }
+  handleCellClick = (y, x) => {
+    const { palavrasTentadas, crip, itemColors } = this.state;
 
-  //seleção das palavras
-
-  
-  //   verificaCasa(tentativa,certas){
-  //      tentativa = this.state.palavrasTentadas
-  //      certas = this.state.certos
-  //     //  function compareArrays(a1, a2) {
-  //     //   return a1.every((value, index) => value === a2[index]);
-  //     // }
-  //     // console.log(certas[2])
-  //     // console.log(compareArrays(tentativa, certas[2]))
-  //      for (let i = 0; i < certas.length; i++) {
-  //     const currentArray = certas[i];
-  //     if (this.validacao(tentativa, currentArray)) {
-  //       // Aqui você pode aplicar as condições desejadas quando a igualdade é encontrada.
-  //       console.log("palavre é igual a um dos arrays em certos");
-  //       // ... Suas condições e ações aqui ...
-  //       return; // Saia do loop se a igualdade for encontrada
-  //     }else{
-  //         console.log("palavre não é igual a nenhum dos arrays em certos");
-  //     }
-       
-      
-  //   }
-
-  //   // Se o loop terminar sem encontrar uma igualdade, você pode aplicar outras condições.
-
-  //   // ... Outras condições e ações aqui ...
-  //   }
-  
-  //       validacao(arr1, arr2){
-  //   if (arr1.length !== arr2.length) {
-  //     return false;
-  //   }
-  //   for (let i = 0; i < arr1.length; i++) {
-  //     if (arr1[i] !== arr2[i]) {
-  //       return false;
-  //     }
-  //   }
-  //   return true;
-  // }
-  
-
-  handleCellClick(y,x) {
-    this.state.palavrasTentadas.push([y, x])
-    console.log(this.state.palavrasTentadas)
-    console.log(this.state.certos)
-    
-    let string = "";
-    for (const row of this.state.palavrasTentadas) {
-      for (const cell of row) {
-      string += cell;
+    // Verificar se a célula já foi clicada ou se a palavra já foi encontrada
+    if (
+      palavrasTentadas.some((coord) => coord[0] === y && coord[1] === x) ||
+      itemColors[y][x] === "green"
+    ) {
+      return; // Não faça nada se a célula já foi clicada ou a palavra já foi encontrada
     }
-}
 
-console.log(string);
-    // this.verificaCasa()
-    
-    let stri= "";
-    for (const row of this.state.certos) {
-    for (const cell of row) {
-    stri += cell;
-  }
-  stri += "\n";
-}
+    // Verificar se a célula clicada é válida com base na última célula clicada
+    const ultimaCoordenada = palavrasTentadas[palavrasTentadas.length - 1];
+    if (
+      ultimaCoordenada &&
+      !this.ehCelulaAdjacente(ultimaCoordenada[0], ultimaCoordenada[1], y, x)
+    ) {
+      return; // Não faça nada se a célula não for adjacente à última célula clicada
+    }
 
-console.log(stri);
-  // this.verificaCasa()
-  
-}
-  
+    palavrasTentadas.push([y, x]);
 
- 
+    let string = "";
+    for (const [row, cell] of palavrasTentadas) {
+      string += row + "" + cell;
+    }
 
-   
-  
+    // Alterar a cor do item para laranja
+    const newColors = this.state.itemColors.map((row) => [...row]);
+    newColors[y][x] = "orange";
+
+    // Atualizar o estado com as novas cores
+    this.setState({ itemColors: newColors });
+
+    let palavraEncontrada = false;
+
+    for (var cont = 0; cont < 10; cont++) {
+      if (crip[cont] === string) {
+        console.log("Acertou");
+
+        // Limpar palavrasTentadas e string
+        this.setState({ palavrasTentadas: [] });
+        string = "";
+
+        // Alterar a cor da célula para verde
+        const updatedColors = this.state.itemColors.map((row) => [...row]);
+        for (const [cy, cx] of palavrasTentadas) {
+          updatedColors[cy][cx] = "green";
+        }
+        this.setState({ itemColors: updatedColors });
+
+        palavraEncontrada = true;
+        break; // Saia do loop se a palavra for encontrada
+      }
+    }
+
+    // Limpar todas as cores se a palavra não for encontrada
+    if (!palavraEncontrada && palavrasTentadas.length > 7) {
+      const resetColors = Array.from({ length: 204 }, () =>
+        Array(204).fill("white")
+      );
+      this.setState({ itemColors: resetColors, palavrasTentadas: [] });
+    }
+  };
+
   render() {
+    const { gridLetras, palavrasEncontradas, itemColors } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.grid}>
-          {this.state.gridLetras.map((row, rowIndex) => (
+          {gridLetras.map((row, rowIndex) => (
             <View key={rowIndex} style={styles.row}>
               {row.map((cell, columnIndex) => (
                 <TouchableOpacity
                   key={columnIndex}
                   style={[
                     styles.cell,
-                    this.state.palavrasEncontradas.includes(cell) &&
-                    styles.foundCell,
+                    palavrasEncontradas.includes(cell) && styles.foundCell,
+                    { backgroundColor: itemColors[rowIndex][columnIndex] },
                   ]}
                   onPress={() => this.handleCellClick(rowIndex, columnIndex)}
                 >
